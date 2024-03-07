@@ -1,9 +1,9 @@
 # experiment name
-EXP_NAME: CycleGAN-apple2orange
+EXP_NAME: CycleGAN-maps
 # random number seed
 SEED: 0
 # run device model
-DEVICE_ID: 0
+DEVICE_ID: 1
 
 # Model define
 MODEL:
@@ -26,8 +26,10 @@ MODEL:
 
 TRAIN:
   DATASET:
-    SRC_IMAGE_PATH: ./data/apple2orange/trainA
-    DST_IMAGE_PATH: ./data/apple2orange/trainB
+    SRC_IMAGE_PATH: /home/deep/DATA/zpc/cyclegan/maps/trainA
+    DST_IMAGE_PATH: /home/deep/DATA/zpc/cyclegan/maps/trainB
+    # SRC_IMAGE_PATH: ./data/apple2orange/trainA
+    # DST_IMAGE_PATH: ./data/apple2orange/trainB
     UNPAIRED: True
 
     IMAGE_SIZE: 256

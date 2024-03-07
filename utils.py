@@ -16,7 +16,7 @@ import random
 import shutil
 from collections import OrderedDict
 from enum import Enum
-from typing import Any
+from typing import Any, Union, Tuple, Type
 
 import torch
 import torch.backends.mps
@@ -104,12 +104,16 @@ def load_pretrained_state_dict(
 
 def load_resume_state_dict(
         model: nn.Module,
-        ema_model: nn.Module | None,
+        ema_model: Union[nn.Module, None],   #nn.Module | None,
         optimizer: Optimizer,
         scheduler: Any,
         compile_state: bool,
         model_weights_path: str,
-) -> tuple[Any, Module | None | Any, Any, Optimizer, Any] | tuple[Any, Module | None | Any, Any, Optimizer]:
+) -> Union[
+    Tuple[Any, Union[nn.Module, None, Any], Any, Optimizer, Any],
+    Tuple[Any, Union[nn.Module, None, Any], Any, Optimizer]
+]:
+# -> Tuple[Any, Module | None | Any, Any, Optimizer, Any] | Tuple[Any, Module | None | Any, Any, Optimizer]:
     """Restore training model weights
 
     Args:

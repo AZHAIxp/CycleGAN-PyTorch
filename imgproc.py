@@ -20,6 +20,7 @@ import torch
 from numpy import ndarray
 from torch import Tensor
 from torchvision.transforms import functional as F_vision
+from typing import Union, List
 
 __all__ = [
     "image_to_tensor", "tensor_to_image",
@@ -102,10 +103,13 @@ def preprocess_one_image(image_path: str, range_norm: bool, half: bool, device: 
 
 
 def center_crop_torch(
-        src_images: ndarray | Tensor | list[ndarray] | list[Tensor],
-        dst_images: ndarray | Tensor | list[ndarray] | list[Tensor],
+        src_images: Union[np.ndarray, torch.Tensor, List[np.ndarray], List[torch.Tensor]],
+        dst_images: Union[np.ndarray, torch.Tensor, List[np.ndarray], List[torch.Tensor]],
+        # src_images: ndarray | Tensor | List[ndarray] | List[Tensor],
+        # dst_images: ndarray | Tensor | List[ndarray] | List[Tensor],
         patch_size: int,
-) -> [ndarray, ndarray] or [Tensor, Tensor] or [list[ndarray], list[ndarray]] or [list[Tensor], list[Tensor]]:
+) -> Union[ndarray, torch.Tensor, List[ndarray], List[Tensor]]:
+    #[ndarray, ndarray] or [Tensor, Tensor] or [List[ndarray], List[ndarray]] or [List[Tensor], List[Tensor]]:
     """Intercept two images to specify the center area
 
     Args:
@@ -173,10 +177,13 @@ def center_crop_torch(
 
 
 def random_crop_torch(
-        src_images: ndarray | Tensor | list[ndarray] | list[Tensor],
-        dst_images: ndarray | Tensor | list[ndarray] | list[Tensor],
+        src_images: Union[ndarray, torch.Tensor, List[ndarray], List[Tensor]],
+        dst_images: Union[ndarray, torch.Tensor, List[ndarray], List[Tensor]],
+        # src_images: ndarray | Tensor | List[ndarray] | List[Tensor],
+        # dst_images: ndarray | Tensor | List[ndarray] | List[Tensor],
         patch_size: int,
-) -> [ndarray, ndarray] or [Tensor, Tensor] or [list[ndarray], list[ndarray]] or [list[Tensor], list[Tensor]]:
+) -> Union[ndarray, torch.Tensor, List[ndarray], List[Tensor]]:
+# -> [ndarray, ndarray] or [Tensor, Tensor] or [list[ndarray], list[ndarray]] or [list[Tensor], list[Tensor]]:
     """Randomly intercept two images in the specified area
 
     Args:
@@ -246,12 +253,15 @@ def random_crop_torch(
 
 
 def random_rotate_torch(
-        src_images: ndarray | Tensor | list[ndarray] | list[Tensor],
-        dst_images: ndarray | Tensor | list[ndarray] | list[Tensor],
+        src_images: Union[ndarray, torch.Tensor, List[ndarray], List[Tensor]],
+        dst_images: Union[ndarray, torch.Tensor, List[ndarray], List[Tensor]],
+        # src_images: ndarray | Tensor | List[ndarray] | List[Tensor],
+        # dst_images: ndarray | Tensor | List[ndarray] | List[Tensor],
         angles: list,
         center: tuple = None,
         rotate_scale_factor: float = 1.0
-) -> [ndarray, ndarray] or [Tensor, Tensor] or [list[ndarray], list[ndarray]] or [list[Tensor], list[Tensor]]:
+) -> Union[ndarray, torch.Tensor, List[ndarray], List[Tensor]]:
+# [ndarray, ndarray] or [Tensor, Tensor] or [list[ndarray], list[ndarray]] or [list[Tensor], list[Tensor]]:
     """Randomly rotate the image
 
     Args:
@@ -310,10 +320,13 @@ def random_rotate_torch(
 
 
 def random_horizontally_flip_torch(
-        src_images: ndarray | Tensor | list[ndarray] | list[Tensor],
-        dst_images: ndarray | Tensor | list[ndarray] | list[Tensor],
+        src_images: Union[ndarray, torch.Tensor, List[ndarray], List[Tensor]],
+        dst_images: Union[ndarray, torch.Tensor, List[ndarray], List[Tensor]],
+        # src_images: ndarray | Tensor | List[ndarray] | List[Tensor],
+        # dst_images: ndarray | Tensor | List[ndarray] | List[Tensor],
         p: float = 0.5
-) -> [ndarray, ndarray] or [Tensor, Tensor] or [list[ndarray], list[ndarray]] or [list[Tensor], list[Tensor]]:
+) -> Union[ndarray, torch.Tensor, List[ndarray], List[Tensor]]:
+# [ndarray, ndarray] or [Tensor, Tensor] or [list[ndarray], list[ndarray]] or [list[Tensor], list[Tensor]]:
     """Randomly flip the image up and down
 
     Args:
@@ -360,10 +373,13 @@ def random_horizontally_flip_torch(
 
 
 def random_vertically_flip_torch(
-        src_images: ndarray | Tensor | list[ndarray] | list[Tensor],
-        dst_images: ndarray | Tensor | list[ndarray] | list[Tensor],
+        src_images: Union[ndarray, torch.Tensor, List[ndarray], List[Tensor]],
+        dst_images: Union[ndarray, torch.Tensor, List[ndarray], List[Tensor]],
+        # src_images: ndarray | Tensor | List[ndarray] | List[Tensor],
+        # dst_images: ndarray | Tensor | List[ndarray] | List[Tensor],
         p: float = 0.5
-) -> [ndarray, ndarray] or [Tensor, Tensor] or [list[ndarray], list[ndarray]] or [list[Tensor], list[Tensor]]:
+) -> Union[ndarray, torch.Tensor, List[ndarray], List[Tensor]]:
+# [ndarray, ndarray] or [Tensor, Tensor] or [list[ndarray], list[ndarray]] or [list[Tensor], list[Tensor]]:
     """Randomly flip the image left and right
 
     Args:

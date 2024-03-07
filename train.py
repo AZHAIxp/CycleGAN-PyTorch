@@ -16,7 +16,7 @@ import itertools
 import os
 import random
 import time
-from typing import Any
+from typing import Any, List, Tuple
 
 import numpy as np
 import torch
@@ -138,8 +138,8 @@ def main():
         print("Resume training model not found. Start training from scratch.")
 
     # Create a experiment results
-    samples_dir = os.path.join("samples", config["EXP_NAME"])
-    results_dir = os.path.join("results", config["EXP_NAME"])
+    samples_dir = os.path.join("/home/deep/DATA2/zpc/cyclegan/maps/samples", config["EXP_NAME"])
+    results_dir = os.path.join("/home/deep/DATA2/zpc/cyclegan/maps/results", config["EXP_NAME"])
     make_directory(samples_dir)
     make_directory(results_dir)
     make_directory(os.path.join(samples_dir, "A"))
@@ -255,7 +255,8 @@ def load_datasets(
 def build_model(
         config: Any,
         device: torch.device,
-) -> [nn.Module, nn.Module, nn.Module, nn.Module, nn.Module, nn.Module]:
+) -> List[nn.Module]:
+# [nn.Module, nn.Module, nn.Module, nn.Module, nn.Module, nn.Module]:
     g_A_model = model.__dict__[config["MODEL"]["G"]["NAME"]](in_channels=config["MODEL"]["G"]["IN_CHANNELS"],
                                                              out_channels=config["MODEL"]["G"]["OUT_CHANNELS"],
                                                              channels=config["MODEL"]["G"]["CHANNELS"])
@@ -290,7 +291,8 @@ def build_model(
     return g_A_model, g_B_model, ema_g_A_model, ema_g_B_model, d_A_model, d_B_model
 
 
-def define_loss(config: Any, device: torch.device) -> [nn.L1Loss, nn.MSELoss, nn.L1Loss]:
+def define_loss(config: Any, device: torch.device) -> Tuple[nn.Module, nn.Module, nn.Module]:
+    # [nn.L1Loss, nn.MSELoss, nn.L1Loss]:
     if config["TRAIN"]["LOSSES"]["IDENTITY_LOSS"]["NAME"] == "l1":
         identity_criterion = nn.L1Loss()
     else:
@@ -321,7 +323,7 @@ def define_optimizer(
         d_A_model: nn.Module,
         d_B_model: nn.Module,
         config: Any,
-) -> [optim, optim]:
+) -> Tuple[optim.Optimizer, optim.Optimizer]:
     if config["TRAIN"]["OPTIM"]["NAME"] == "Adam":
         g_optimizer = optim.Adam(itertools.chain(g_A_model.parameters(), g_B_model.parameters()),
                                  config["TRAIN"]["OPTIM"]["LR"],
@@ -343,7 +345,8 @@ def define_scheduler(
         g_optimizer: optim.Adam,
         d_optimizer: optim.Adam,
         config: Any,
-) -> [lr_scheduler, lr_scheduler]:
+) -> Tuple[lr_scheduler.LambdaLR, lr_scheduler.LambdaLR]:
+# [lr_scheduler, lr_scheduler]:
     if config["TRAIN"]["LR_SCHEDULER"]["NAME"] == "LambdaLR":
         lr_lambda = DecayLR(config["TRAIN"]["HYP"]["EPOCHS"], 0, config["TRAIN"]["LR_SCHEDULER"]["DECAY_EPOCHS"]).step
         g_scheduler = lr_scheduler.LambdaLR(g_optimizer, lr_lambda)
@@ -572,10 +575,10 @@ def train(
         # Save training image
         if batch_index == batches:
             save_image(real_image_A,
-                       f"./samples/{config['EXP_NAME']}/A/real_image_A_epoch_{epoch:04d}.jpg",
+                       f"/home/deep/DATA2/zpc/cyclegan/maps/samples/{config['EXP_NAME']}/A/real_image_A_epoch_{epoch:04d}.jpg",
                        normalize=True)
             save_image(real_image_B,
-                       f"./samples/{config['EXP_NAME']}/B/real_image_B_epoch_{epoch:04d}.jpg",
+                       f"/home/deep/DATA2/zpc/cyclegan/maps/samples/{config['EXP_NAME']}/B/real_image_B_epoch_{epoch:04d}.jpg",
                        normalize=True)
 
             # Normalize [-1, 1] to [0, 1]
@@ -583,10 +586,10 @@ def train(
             fake_image_B = 0.5 * (g_A_model(real_image_A).data + 1.0)
 
             save_image(fake_image_A.detach(),
-                       f"./samples/{config['EXP_NAME']}/A/fake_image_A_epoch_{epoch:04d}.jpg",
+                       f"/home/deep/DATA2/zpc/cyclegan/maps/samples/{config['EXP_NAME']}/A/fake_image_A_epoch_{epoch:04d}.jpg",
                        normalize=True)
             save_image(fake_image_B.detach(),
-                       f"./samples/{config['EXP_NAME']}/B/fake_image_B_epoch_{epoch:04d}.jpg",
+                       f"/home/deep/DATA2/zpc/cyclegan/maps/samples/{config['EXP_NAME']}/B/fake_image_B_epoch_{epoch:04d}.jpg",
                        normalize=True)
 
 
